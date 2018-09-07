@@ -25,7 +25,6 @@
 :pygments-linenums-mode: inline
 // path
 :imagesdir: images
-:includedir: _includes
 :idprefix: id_
 :example-caption!:
 ifdef::backend-pdf[]

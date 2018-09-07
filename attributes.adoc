@@ -1,0 +1,36 @@
+:author: Miguel Villafuerte
+:email: mivimur@hotmail.com
+:revnumber: v1.0
+:revdate: {localdate}
+:chapter-label:
+:doctype: book
+:experimental:
+:icons: font
+:stem: latexmath
+:version-label!:
+:page-tags: [release, asciidoctor.js]
+:compat-mode!:
+:numbered:
+:autofit:
+:specialnumbered!:
+:back-cover-image: image:teoria/1. Conjuntos.pdf[]
+// Sections
+:sectnums:
+:leveloffset: 1
+:toc: left
+:toclevels: 3
+// code style
+:source-highlighter: coderay
+:source-highlighter: pygments
+:pygments-linenums-mode: inline
+// path
+:imagesdir: images
+:includedir: _includes
+:idprefix: id_
+:example-caption!:
+ifdef::backend-pdf[]
+:pagenums:
+:tabsize: 4
+:pygments-style: bw
+:source-highlighter: pygments
+endif::[]

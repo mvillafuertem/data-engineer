@@ -1,0 +1,15 @@
+////
+Include in: mongobd-guide.adoc
+////
+[[map-reduce]]
+= Map-Reduce
+
+.Map Reduce
+****
+Es un sistema de procesamiento basado en dos etapas:
+
+map:: Entrada: un documento. Salida: para cada documento se genera una o varias parejas (clave,valor)
+reduce:: Entrada: una clave con todos sus valores. Salida: un valor (asociado de forma implícita a la clave de entrada)
+****
+
+== Instalación

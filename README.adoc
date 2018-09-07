@@ -1,0 +1,21 @@
+= MongoDB Guide
+include::attributes.adoc[]
+
+.Bienvenido a MongoDB
+****
+Esto es un pequeño manual sobre mongoDB
+****
+
+image::mongodb-logo.png[]
+
+[horizontal]
+.Indice
+<<{includedir}/introduction.adoc#introduction, Introduction>> :: Introducción
+
+<<{includedir}/aggregation-framework.adoc#aggregation-framework, Aggregation Framework>> :: Agregaciones
+
+<<{includedir}/map-reduce.adoc#map-reduce, Map Reduce>> :: Map Reduce
+
+
+[TIP]
+$ docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor-pdf -r asciidoctor-diagram -r asciidoctor-mathematical -a mathematical-format=svg mongodb-guide.adoc

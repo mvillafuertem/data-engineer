@@ -1,0 +1,120 @@
+////
+Include in: mongobd-guide.adoc
+////
+[[aggregation-framework]]
+= Agregaciones
+
+.Aggregaciones
+****
+En las bases de datos es muy importante disponer de consultas que
+permitan combinar diferentes elementos; por ejemplo dada la colección
+de ventas en una tienda calcular el total vendido; o incluso los subtotales
+logrados por cada vendedor.
+****
+
+== Comandos Básicos
+
+[NOTE]
+====
+
+db.mycollection.aggregate([]) es equivalente db.mycollection.find({})
+
+db.mycollection.find({}).count() es un wrapper de db.mycollection.aggregate({$count: "total"})
+
+====
+
+$db.mycollection.aggregate([{$group: {_id: "$name"}}]) ::
+Muestra una nueva coleccion agrupando por name, donde esté será el campo _id
+
+
+[source, mongodb]
+._id es obligatorio
+----
+db.mycollection.aggregate([
+    // Stage 0
+    { $limit: 10 },
+    // Stage 1
+    { $match: { name: "Pepe" }},
+    // Stage 2
+    { $group: { _id: { name: "$name", age: "$age" } }}
+    // Stage 3
+    { $project: { _id: 0, name: 1, edad: "$age" }}
+    // Stage N
+])
+
+
+
+db.mycollection.aggregate([
+    { $lookup: {
+        from: "adress",
+        localField: "userId",
+        foreignField: "userId",
+        as: "adress"}
+     }
+])
+
+
+Because you are trying to use the $lookup features (syntax) from MongoDB v3.6 on MongoDB v3.4
+
+The MongoDB v3.4 $lookup syntax:
+
+{
+   $lookup:
+     {
+       from: <collection to join>,
+       localField: <field from the input documents>,
+       foreignField: <field from the documents of the "from" collection>,
+       as: <output array field>
+     }
+}
+The MongoDB v3.6 $lookup syntax:
+
+{
+   $lookup:
+     {
+       from: <collection to join>,
+       let: { <var_1>: <expression>, …, <var_n>: <expression> },
+       pipeline: [ <pipeline to execute on the collection to join> ],
+       as: <output array field>
+     }
+}
+https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/
+----
+
+== Estructura "Stages"
+
+La agregación en MongoDB sigue una estructura tipo "pipeline": diferentes etapas, donde cada una toma la salida de la anterior.
+
+Los elementos de la "tubería" se incluyen en un array y se ejecutarán por orden. Cada elemento puede repetirse y el orden puede variar.
+
+$geonear:: Se utiliza para búsquedas por posición (ver índices geoespaciales). n:1
+$group:: Realiza la agregación (n:1)
+$limit:: Número de elementos máximo. n:1
+$lookup:: join the varias colecciones
+$match:: Filtra documentos, dejando solo los que vamos a utilizar. (n:1)
+$out:: crea una colección nueva a partir de los datos. 1:1
+$project:: Su función es "recolocar" el documento. Selecciona las claves que se usarán, y puede "elevar" claves que están en subdocumentos al nivel superior. Tras un paso $project habrá tantos documentos como inicialmente; pero con un formato que puede haber variado. (1:1)
+$redact:: Seguridad. Impide que algunos usuarios vean algunos documentos. n:1
+$sample:: permite elegir al azar unos cuantos documentos a modo de muestra. n:1
+$skip:: Saltarse algunos a elementos n:1
+$sort:: Ordena. 1:1
+$unwind:: "aplana" datos de arrays, produciendo tantos elementos como elementos tenga el array. 1:n
+
+== Funciones
+
+$sum:: suma (o incrementa)
+$avg:: calcula la media
+$min:: mínimo de los valores
+$max:: máximo
+$push:: Mete en un array un valor determinado
+$addToSet:: Mete en un array los valore que digamos, pero solo una vez
+$first:: obtiene el primer elemento del grupo, a menudo junto con sort
+$last:: obtiene el último elemento, a menudo junto con sort
+
+[horizontal.properties%step]
+property 1:: does stuff
+property 2:: does different stuff
+
+[horizontal, role="properties", options="step"]
+property 1:: does stuff
+property 2:: does different stuff

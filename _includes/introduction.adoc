@@ -1,0 +1,200 @@
+////
+Include in: mongobd-guide.adoc
+////
+[[introduccion]]
+= Introducción a MongoDB
+
+.Introducción
+****
+
+****
+
+== Comandos Básicos
+
+$ show dbs::
+Lista de BBDD
+
+$ use mybd::
+selección una base de datos
+
+$ show collections::
+Lista todas las colecciones de una base de datos
+
+$ db.createCollection("mycollection")::
+Crea una colección en una base de datos
+
+
+== CRUD
+
+=== Create
+
+$ db.createCollection("mycollection")::
+Crea una colección en una base de datos
+
+$ db.mycollection.insertOne({name: "Pepe"})::
+Crea un documento en la colección
+
+$ db.mycollection.insertMany([{name: "Pepe", age: NumberInt(32), address: { street: "madrid"}}, {name: "Pipo", age: NumberInt(26), address: { street: "barcelona"}}])::
+Crea varios documentos en la colección
+
+=== Read
+
+$ db.mycollection.findOne()::
+Muestra el primer documento de la colección
+
+$ db.mycollection.find()::
+Muestra todos los documentos de la colección
+
+$ db.mycollection.findOne({name: "Pepe"})::
+Muestra el documento de la colección que cumpla la condición
+
+$ db.mycollection.find({name: "Pepe"})::
+Muestra los documentos de la colección que cumpla la condición
+
+$ db.mycollection.findOne({"street.address": "madrid"})::
+Muestra el documento de la colección que cumpla la condición
+
+[WARNING]
+Navegación a sub objetos deben ir entre comillas los atributos
+
+$ db.mycollection.find({"street.address": "madrid"})::
+Muestra los documentos de la colección que cumpla la condición
+
+==== Read Operators
+
+===== $exists
+
+$ db.mycollection.find({"street.address": {$exists: true}})::
+Muestra los documentos de la colección que cumpla la condición
+
+
+=== Update
+
+==== Update Operators
+
+===== $set
+
+$ db.mycollection.updateOne({name: "Pepe"}, {$set: {age:20}})::
+Primero busca luego setea el valor
+
+===== $unset
+
+$ db.mycollection.updateOne({name: "Pepe"}, {$unset: 1})::
+Primero busca luego elimina el valor
+
+===== $inc
+
+$ db.mycollection.updateOne({name: "Pepe"}, {$inc: {age: 1}})::
+Primero busca luego incrementa el valor
+
+===== $rename
+
+===== $currentDate
+
+===== $addToSet
+
+
+
+=== Delete
+
+$ db.mycollection.deleteOne({"street.address": "madrid"})::
+Elimina el documento de la colección que cumpla la condición
+
+$ db.mycollection.deleteMany({"street.address": "madrid"})::
+Elimina los documentos de la colección que cumpla la condición
+
+
+==== Delete Operators
+
+===== $exists
+
+$ db.mycollection.deleteMany({"street.address": {$exists: false}})::
+Elimina los documentos de la colección que cumpla la condición
+
+
+== Operadores Query
+
+=== $or
+
+$ db.mycollection.find({$or: [{name: "Pepe"}, {age: {$gt: 18}} ]})::
+Busca los que se llamen Pepe o sean mayores de 18 o los dos
+
+=== $and
+
+$ db.mycollection.find({$and: [{name: "Pepe"}, {age: {$gt: 18}} ]})::
+Busca los que se llamen Pepe y sean mayores de 18
+
+=== $in
+
+$ db.mycollection.find({telephone: {$in: ["600000000", "910000000"]}}) ::
+Busca en un array que contenga alguno de esos elementos
+
+=== $eq
+
+=== $ne
+
+=== $nin
+
+=== $lt - less than
+
+$ db.mycollection.find({age: {$lt: 18}})::
+Busca los menores de 18
+
+=== $gt - greater than
+
+$ db.mycollection.find({age: {$gt: 18}})::
+Busca los mayores de 18
+
+=== $$gte - greater than or equals
+
+$ db.mycollection.find({age: {$gte: 18}})
+Busca los mayores o iguales que 18
+
+=== $regex
+
+$ db.mycollection.find({age: {$gt: 18}})::
+Busca
+
+
+== Métodos de Ayuda
+
+=== sort()
+
+$ db.mycollection.find({}).sort({name: 1})
+Ordena los elementos de manera ascendente=1 o descendente=-1
+
+=== limit()
+
+$ db.mycollection.find({}).limit(2)
+Muestra los dos primeros documentos de una colección
+
+=== skip()
+
+$ db.mycollection.find({}).skip(2)
+Salta los dos primeros documentos de una colección
+
+
+== Lógica
+
+[source, mongodb]
+----
+db.mycollection
+    .find({'name':
+        {$in:[
+            "Pepe",
+            "Pepa"
+            ]
+         }},
+         {
+            'name':1,
+            'bankId':1,
+            '_id':0})
+    .sort({'bankId':1})
+    .forEach(
+        function(doc) {
+            print(doc.name);
+        });
+----
+
+
+

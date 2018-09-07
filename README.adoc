@@ -10,11 +10,11 @@ image::mongodb-logo.png[]
 
 [horizontal]
 .Indice
-<<{includedir}/introduction.adoc#introduction, Introduction>> :: Introducción
+<<_includes/introduction.adoc#introduction, Introduction>> :: Introducción
 
-<<{includedir}/aggregation-framework.adoc#aggregation-framework, Aggregation Framework>> :: Agregaciones
+<<_includes/aggregation-framework.adoc#aggregation-framework, Aggregation Framework>> :: Agregaciones
 
-<<{includedir}/map-reduce.adoc#map-reduce, Map Reduce>> :: Map Reduce
+<<_includes/map-reduce.adoc#map-reduce, Map Reduce>> :: Map Reduce
 
 
 [TIP]

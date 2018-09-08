@@ -174,9 +174,10 @@ $ db.mycollection.find({}).skip(2)
 Salta los dos primeros documentos de una colección
 
 
-== Lógica
+== Funciones anónimas
 
 [source, mongodb]
+.Filtra e imprime
 ----
 db.mycollection
     .find({'name':
@@ -194,6 +195,14 @@ db.mycollection
         function(doc) {
             print(doc.name);
         });
+----
+
+[source, mongodb]
+.Busca una coleccion
+----
+
+db.getCollectionNames().filter(function(c){ return /parser/.test(c) })
+
 ----
 
 

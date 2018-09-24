@@ -1,0 +1,22 @@
+////
+Include in: mongo-export.adoc
+////
+[[mongo-export]]
+= Mongo Export
+
+.Introducción
+****
+
+****
+
+== Comandos Básicos
+
+mongoexport JSON::mongoexport --host localhost
+            --port 27017 
+            --username admin
+            --password 1234 
+            --db myDb 
+            --collection myCollection 
+            --sort '{_id: 1}' 
+            --limit 1000 
+            --out pepe.json

@@ -10,6 +10,8 @@ image::mongodb-logo.png[]
 
 [horizontal]
 .Indice
+<<_includes/setup.adoc#setup, Setup>> :: Configuración
+
 <<_includes/introduction.adoc#introduction, Introduction>> :: Introducción
 
 <<_includes/aggregation-framework.adoc#aggregation-framework, Aggregation Framework>> :: Agregaciones

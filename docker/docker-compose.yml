@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+
+  # I N F R A S T R U C T U R E
+  polynote:
+    container_name: polynote
+    image: polynote/polynote:0.3.5-2.12
+    command: --config /opt/config/config.yml
+    ports:
+      - 8192:8192
+    volumes:
+      - "./config.yml:/opt/config/config.yml"
+      - "../notebooks:/opt/notebooks/"
+    restart: always
+    depends_on:
+      - mongo
+    external_links:
+      - "mongo:mongo.local"
+
+  mongo:
+    container_name: mongo
+    hostname: "mongo.local"
+    image: mongo:4.2.5
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    restart: always
+

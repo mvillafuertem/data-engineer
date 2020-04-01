@@ -1,0 +1,17 @@
+////
+Include in: mongobd-guide.adoc
+////
+[[setup]]
+= Setup
+
+.Configuración
+****
+
+****
+
+
+$ docker-compose up -d::
+
+$ docker exec -it mongo mongo admin -u root -p rootpassword::
+
+$ db.version()::

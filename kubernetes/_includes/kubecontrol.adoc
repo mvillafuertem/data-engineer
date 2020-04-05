@@ -1,0 +1,115 @@
+////
+Include in: kubernetes.adoc
+////
+[[kubectl]]
+= Kubecontrol `kubectl`
+
+
+
+== Namespace
+
+
+$ kubectl create namespace openwhisk::
+
+
+$ kubectl config set-context $(kubectl config current-context) --namespace=openwhisk::
+Change namespace
+
+
+== Pod
+
+
+$ kubectl get pods::
+List all pods
+
+
+$ kubectl delete pod [NAME]::
+Delete a pod
+
+
+$ kubectl describe pod [NAME]::
+Describe a pod
+
+
+$ kubectl get pods -w::
+List all pods continuous watch
+
+
+$ kubectl logs pod [NAME]::
+List all pods
+
+
+
+
+
+== Delete
+
+
+[source, bash, numbered]
+.delete all
+----
+
+# delete all pods
+kubectl delete --all pods --namespace=default
+
+
+# deete all deployments
+ kubectl delete --all deployments --namespace=default
+
+ # delete all services
+kubectl delete --all services --namespace=default
+
+----
+
+
+== Deployment
+
+
+[source, bash, numbered]
+.deploy
+----
+
+# status
+kubectl rollout status deployment
+
+
+# history
+ kubectl rollout history deployment
+
+ # undo
+kubectl rollout undo deployment
+
+
+----
+
+
+
+[source, yaml, numbered]
+.deploy
+----
+readinessProbe: # check if service in a healthy state, will remove pod from service/loadbalancer if probe failed
+    httpGet:
+        path: /health
+        port: 9000
+    initialDelaySeconds: 10 # start checking after 10s after pod starts. should set to a minimal value such that service able to receive requests as soon as it is ready
+    periodSeconds: 10 # check health check api every 10 seconds
+    timeoutSeconds: 3 # if response time is logger than 3 seconds, we consider the check as failed
+    failureThreshold: 3  # if check fails for 3 times in a row, we consider the pod is in a bad state, pod will be restarted
+    successThreshold: 1 # if check succeeds for once, we consider the pod is back to normal
+
+
+livenessProbe: # check if pod is in a bad state, will restart pod if probe failed
+    httpGet:
+        path: /health
+        port: 9000
+    initialDelaySeconds: 180 # start checking after 180s after pod starts, should be logger than service start time. Some service takes minutes to start, so we set a big value here.
+    periodSeconds: 10 # check health check api every 10 seconds
+    timeoutSeconds: 3 # if response time is logger than 3 seconds, we consider the check as failed
+    failureThreshold: 3 # if check fails for 3 times in a row, we consider the pod is in a bad state, pod will be restarted
+    successThreshold: 1 # if check succeeds for once, we consider the pod is back to normal
+
+----    
+
+    
+    
+    

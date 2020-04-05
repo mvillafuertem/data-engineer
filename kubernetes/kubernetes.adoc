@@ -1,0 +1,26 @@
+[[kubernetes]]
+= Kubernetes
+include::attributes.adoc[]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

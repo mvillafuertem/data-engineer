@@ -1,0 +1,215 @@
+////
+Include in: kubernetes.adoc
+////
+[[introduccion]]
+= Introducción
+
+
+== Cluster
+
+Conjunto de nodos que vamos
+a manejar desde un punto de entrada
+
+== Arquitectura
+
+=== Kubernetes Master
+
+
+==== API Server
+
+Es el principal servicio, es la interfaz entre etcd
+y todo lo demás. Es el único servicio que escribe en
+la capa de persistencia de ETCD.
+
+
+==== Controller Manager
+
+
+==== Scheduler
+
+
+==== ETCD
+
+Es la capa de persistencia de Kubernetes, tecnologia de almacenamiento
+clave-valor distribuida. Es simplemente un microservicio.
+
+
+=== Kubernetes Nodos
+
+Un kernel de linux en ejecución,
+conjunto de recursos que podemos usar.
+Normalmente corresponde a una máquina fisica,
+puede ser una máquina virtual
+
+==== Kubelet
+
+Es el punto de entrada a cada nodo,
+es el manejador de pods que hay en cada nodo.
+
+==== cAdvisor
+
+==== Kube-Proxy
+
+=== Pod
+
+Grupo de contenedores en ejecución,
+compartiendo recursos, y son mortales,
+es decir tiene un ciclo de vida, si un pod
+se elimina no se puede recuperar.
+
+==== Docker
+
+Uso de contenedores dentro de cada pod
+
+==== Configuration
+
+===== Secret
+
+Contiene una pequeña cantidad de
+información sensible (password API, token, etc).
+
+`kubectl create secret generic mysecret --from-file [file]`
+
+los puedes usar como ficheros haciendo uso de
+volumenes o variables de entorno.
+
+===== ConfigMaps
+
+`kubectl create configmap myconfig --from-literal=pepe=pipo`
+
+===== Volume
+
+====== PersistentVolumeClaim
+
+
+=== Namespace
+
+
+=== Quotas
+
+=== Controller
+
+
+==== ReplicationController
+
+Unidad básica que para generar un conjunto
+de uno o más pods, que tienen la capacidad
+de escalar bajo petición.
+
+Agrupa a varios pods que contengan el selector.
+
+==== ReplicaSet
+
+Nueva generación de los ReplicationController
+con el mismo próposito, a diferencia de que
+los selectores son más avanzados.
+
+Son usados por los Deployment para lanzar pods
+
+==== Deployment
+
+Nos permite lanzar ReplicaSet, cambiar sus
+caracteristicas de manera controlada y realizar
+un control de versiones sobre ello.
+
+Esto lo hace por revision, es decir,
+lanza un ReplicaSet nuevo cuando lo modificamos
+con los nuevos pods y va eliminando los antiguos
+ReplicaSet y pasando todas las conexiones al nuevo.
+
+Guarda el control de versiones y configuracion
+anrigua. La ventaja es que podemos hacer un rollback
+con una configuracion anterior
+
+==== DaemonSet
+
+Permite que automaticamente se despliegue un
+pod en cada uno de los nodos de un clúster.
+
+Útil para lanzar procesos de monitorización.
+
+==== StatefulSet
+
+Muy parecido a los Deployment pero con
+la posibilidad de despliegue de aplicaciones que
+guardan estado, su compartamiento es distinto,
+necesita tener acoplado un Service, este se encargará
+de vincularse a todos los pods y encargarse que esten
+activos y identificación propia. Y también un VolumeMount
+donde guardara los datos de configuración.
+
+Se diferencia en comportamiento a los Deployment,
+es que se encargará de la unicidad, existencia y orden
+de cada pod que lancemos. Acoplará un identificador
+único y aunque los borremos, cuando volvamos a lanzar
+serán vinculados a ese identificador único.
+
+==== Job
+
+Asegura que cada Pod completa su ejecución
+hasta el final. Su trabajo acaba una vez se
+ejecuta el Pod y no se vuelve a lanzar de nuevo,
+es decir a diferencia de los Deployment o ReplicaSet
+que se aseguran de que siempre este corriendo el Pod.
+
+
+Tiene una configuracion de reintentos en caso de que
+falle `backoffLimit`. Y otra opción en caso de exito `completions`.
+Puede afectar a uno o multiples pod con la opción
+`parallelism`.
+
+
+==== Cron Job
+
+Genera un Job con tareas programadas,
+sigue reglas de un cron `schedule`.
+
+Politica de concurrencia `concurrencyPolicy`.
+
+Politica de suspensión `suspend`
+
+==== Ingress
+
+Para exponer varios servicios fuera del cluster,
+se utiliza el artefactor Ingress. Ingress controller
+Puedes aplicar reglas de path, para llamar a los diferentes
+servicios
+
+
+=== Service
+
+Es un unico punto de entrada para uno o varios pods,
+de modo que no sabes a que pod estás conectado.
+este manifiesto debe referenciar al deployment,
+esto se hace con el selector.
+
+==== ClusterIP
+
+Asigna una ip interna del cluster, para comunicación interna
+
+==== NodePort
+
+Asigna una ip para poder acceder desde fuera del cluster,
+a traves de las maquinas virtuales.
+
+=== LoadBalancer
+
+Tener una ip fija
+
+==== DNS
+
+kubelet
+
+
+=== Objetos alpha beta
+
+=== Labels Selector
+
+
+== Manifest
+
+Infraestructura como código es un concepto clave,
+los procesos, arquitectura de red, se escribe en ficheros
+de texto plano `.yaml` `.json`.
+Aporta ventajas de tener mayor consistencia,
+versiones de configuración, etc.

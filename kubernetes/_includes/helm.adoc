@@ -1,0 +1,64 @@
+////
+Include in: kubernetes.adoc
+////
+[[helm]]
+= Helm
+
+
+== OpenWhisk
+
+
+[source, bash, numbered]
+.install helm
+----
+
+helm init
+
+----
+
+
+[source, bash, numbered]
+.tiller deploy
+----
+
+kubectl get pods -n kube-system
+
+----
+
+[source, bash, numbered]
+.tiller rol
+----
+
+kubectl create clusterrolebinding tiller-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+
+----
+
+
+
+[source, bash, numbered]
+.tiller rol
+----
+
+export AUTH_SECRET=$(kubectl -n openwhisk get secret openwhisk-auth-tokens -o yaml | awk ' /auth_whisk_system/ {print $2}' | base64 --decode)
+export WSK_PORT=$(kubectl -n openwhisk describe service nginx | awk ' /https-api/ && /NodePort/ {print substr($3,0,5)}')
+export KUBE_IP=$(minikube -n openwhisk service nginx --url | awk '{print substr($1,8,14);exit}')
+wsk property set --auth $AUTH_SECRET --apihost https://$KUBE_IP:$WSK_PORT
+
+
+----
+
+
+[source, bash, numbered]
+.action
+----
+
+
+wsk -i action list
+
+wsk -i activation list
+
+wsk -i activation get [ID_ACTIVATION]
+
+----
+
+

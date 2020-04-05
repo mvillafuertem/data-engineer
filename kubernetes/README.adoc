@@ -1,0 +1,15 @@
+= k8s
+include::attributes.adoc[]
+
+image::k8s-logo.png[]
+
+[horizontal]
+.Indice
+<<_includes/introduction.adoc#kubernetes, Introduction>> :: Arquitectura, Basic Object
+<<_includes/minikube.adoc#minikube, Minikube>> :: Install, configure and play
+<<_includes/kubecontrol.adoc#kubectl, Kubectl>> :: Commands
+<<_includes/helm.adoc#helm, Helm>> :: Package Manager
+
+
+[TIP]
+$ docker run --rm -v $(pwd):/documents/ asciidoctor/docker-asciidoctor asciidoctor-pdf -r asciidoctor-diagram -r asciidoctor-mathematical -a mathematical-format=svg mongodb-guide.adoc

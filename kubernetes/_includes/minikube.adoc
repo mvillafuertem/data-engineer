@@ -1,0 +1,142 @@
+////
+Include in: kubernetes.adoc
+////
+[[minikube]]
+= Minikube
+
+****
+
+Levantar un cluster en local,
+con toda la configuración necesaria
+
+****
+
+== Install
+
+[source, bash, numbered]
+.Download the latest release
+----
+
+curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-\
+$(uname -s | tr '[:upper:]' '[:lower:]')-amd64
+
+----
+
+
+[source, bash, numbered]
+.Finish install
+----
+
+chmod +x minikube && \
+sudo mv -v minikube /usr/local/share/ && \
+sudo ln -sf /usr/local/share/minikube /usr/local/bin && \
+rm minikube
+
+----
+
+== Dependencies
+
+
+=== Kubecontrol `kubectl`
+
+[source, bash, numbered]
+.Download the latest release
+----
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/\
+$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/\
+$(uname -s | tr '[:upper:]' '[:lower:]')/amd64/kubectl
+
+----
+
+[source, bash, numbered]
+.Download a specific version
+----
+
+curl -LO https://storage.googleapis.com/kubernetes-release/release/\
+v1.12.0/bin/\
+$(uname -s | tr '[:upper:]' '[:lower:]')/amd64/kubectl
+
+----
+
+[source, bash, numbered]
+.Finish install
+----
+
+sudo mv -v kubectl /usr/local/share/ && \
+sudo ln -sf /usr/local/share/kubectl /usr/local/bin
+
+----
+
+
+=== VirtualBox
+
+[source, bash, numbered]
+.Install VirtualBox
+----
+
+sudo apt-get install virtualbox virtualbox-ext-pack
+
+----
+
+
+
+== Configure
+
+
+[source, bash, numbered]
+.Start with latest release
+----
+
+minikube start
+
+----
+
+[source, bash, numbered]
+.Start with specific version
+----
+
+minikube start --kubernetes-version v1.7.3
+
+----
+
+
+[source, bash, numbered]
+.Cluster information
+----
+
+kubectl cluster-info
+
+----
+
+
+[source, bash, numbered]
+.context
+----
+
+kubectl config use-context minikube
+
+----
+
+
+[source, bash, numbered]
+.config
+----
+
+kubectl config view
+
+----
+
+
+== Dashboard
+
+
+[source, bash, numbered]
+.context
+----
+
+minikube dashboard
+
+kubectl --context=minikube --namespace=kube-system get svc kubernetes-dashboard -o yaml
+
+----

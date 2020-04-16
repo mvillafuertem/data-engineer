@@ -26,5 +26,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
     ports:
       - 27017:27017
+    volumes:
+      - "./init.js:/docker-entrypoint-initdb.d/init.js"
+      - "/tmp:/tmp"
     restart: always
 

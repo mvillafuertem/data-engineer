@@ -1,0 +1,49 @@
+version: '3.7'
+services:
+
+  # I N F R A S T R U C T U R E
+  odoo:
+    container_name: odoo
+    image: odoo:12.0
+    ports:
+      - 8069:8069
+    environment:
+      - HOST=postgres
+      - USER=odoo
+      - PASSWORD=odoo
+#    volumes:
+#      - odoo-web-data:/var/lib/odoo
+#      - ./config:/etc/odoo
+#      - ./addons:/mnt/extra-addons
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres:10
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+#    volumes:
+#      - odoo-db-data:/var/lib/postgresql/data/pgdata
+
+  grafana:
+    container_name: grafana
+    hostname: "grafana.local"
+    image: grafana/grafana:6.7.2
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_AUTH_BASIC_ENABLED: "true"
+      GF_SECURITY_ADMIN_USER: root
+      GF_SECURITY_ADMIN_PASSWORD: rootpassword
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      - postgres
+    external_links:
+      - "postgres:postgres.local"

@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+
+  # I N F R A S T R U C T U R E
+  polynote:
+    container_name: polynote
+    image: polynote/polynote:0.3.6-2.12
+    command: --config /opt/config/config.yml
+    ports:
+      - 8192:8192
+    volumes:
+      - "./config.yml:/opt/config/config.yml"
+      - "../notebooks:/opt/notebooks/"
+      - "~/.aws:/opt/.aws"
+    restart: always
+
+# docker run --rm -it --entrypoint /bin/bash -v ~/.aws:/root/.aws amazon/aws-cli:2.0.7
+# docker exec -it aws-cli bash
+  aws-cli:
+    container_name: aws-cli
+    image: amazon/aws-cli:2.0.7
+    entrypoint: "/bin/bash -c"
+    command: "'while true; do date; sleep 60; done'"
+    volumes:
+      - "~/.aws:/root/.aws"
+    restart: always

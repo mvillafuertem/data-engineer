@@ -21,3 +21,31 @@ mongoexport --host localhost
             --sort '{_id: 1}' 
             --limit 1000 
             --out pepe.json
+
+mongoimport JSON:: 
+mongoimport --host localhost
+            --port 27017 
+            --username admin
+            --password 1234 
+            --db myDb 
+            --collection myCollection 
+            --file pepe.json
+
+mongodump JSON:: 
+mongodump --host localhost
+          --port 27017 
+          --username admin
+          --password 1234 
+          --db myDb 
+          --collection myCollection
+          --out backup/
+
+mongorestore JSON:: 
+ mongorestore --host localhost
+              --port 27017 
+              --username admin
+              --password 1234 
+              backup/
+
+
+ 
